@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import API from "../api";
 
 interface Comment {
@@ -20,7 +20,8 @@ const BlogPosts: React.FC = () => {
     const [posts, setPosts] = useState<Post[]>([]);
 
     useEffect(() => {
-        API.get("/posts").then((response) => setPosts(response.data));
+        API.get("/posts").then((response: { data: Post[] }) => setPosts(response.data));
+
     }, []);
 
     return (
