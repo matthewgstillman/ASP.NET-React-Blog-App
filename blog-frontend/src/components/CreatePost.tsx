@@ -12,11 +12,8 @@ const CreatePost : React.FC = () => {
         e.preventDefault();
         API.post("/posts", { title, content, author }).then(() => {
             setTitle("");
-            console.log(title);
             setContent("");
-            console.log(content);
             setAuthor("");
-            console.log(author);
             alert("Post created");
         })
     };

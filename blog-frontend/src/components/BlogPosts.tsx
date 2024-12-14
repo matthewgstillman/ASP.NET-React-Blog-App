@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import API from "../api";
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
 
 interface Comment {
     id: number;
@@ -25,18 +27,29 @@ const BlogPosts: React.FC = () => {
     }, []);
 
     return (
-        <div>
+        <div className="mainContainer">
             {posts.map((post) => (
-                <div key={post.id}>
-                    <h2>{post.title}</h2>
-                    <p>{post.content}</p>
-                    <p>By {post.author}</p>
-                    <h4>Comments:</h4>
-                    {post.comments.map((comment) => (
-                        <p key={comment.id}>
-                            {comment.author}: {comment.text}
-                        </p>
-                    ))}
+                <div className="blogPostsContainer" key={post.id}>
+                    <Card style={{ width: '100vw' }}>
+                        <Card.Img variant="top" src="holder.js/100px180" />
+                        <Card.Body>
+                            <Card.Title>{post.title}</Card.Title>
+                            <Card.Text>
+                                {post.content}
+                            </Card.Text>
+                            <Card.Text>
+                                Comments
+                            </Card.Text>
+                            <Card.Text>
+                                {post.comments.map((comment) => (
+                                    <p key={comment.id}>
+                                        {comment.author}: {comment.text}
+                                    </p>
+                                ))}
+                            </Card.Text>
+                            <Button variant="primary">Go somewhere</Button>
+                        </Card.Body>
+                    </Card>
                 </div>
             ))}
         </div>

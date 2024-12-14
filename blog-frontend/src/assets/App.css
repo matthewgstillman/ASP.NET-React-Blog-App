@@ -1,0 +1,26 @@
+.App {
+  text-align: center;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.formContainer {
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  align-self: center;
+  justify-self: center;
+  width: 100%;
+  padding: 1rem; 
+  box-sizing: border-box;
+}
