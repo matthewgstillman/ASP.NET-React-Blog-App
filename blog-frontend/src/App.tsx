@@ -29,7 +29,6 @@ const App: React.FC = () => {
                             path="/"
                             element={
                                 <>
-                                    <h1 className="mb-4">Main Page</h1>
                                     <CreatePost />
                                 </>
                             }
