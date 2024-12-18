@@ -30,7 +30,7 @@ const BlogPosts: React.FC = () => {
         <div className="mainContainer">
             {posts.map((post) => (
                 <div className="blogPostsContainer" key={post.id}>
-                    <Card style={{ width: '100vw' }}>
+                    <Card style={{ width: '50vw' }}>
                         <Card.Img variant="top" src="holder.js/100px180" />
                         <Card.Body>
                             <Card.Title>{post.title}</Card.Title>
