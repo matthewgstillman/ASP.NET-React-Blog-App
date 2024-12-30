@@ -158,3 +158,8 @@
 /Users/mattstillman/Desktop/ASP-NET-Mvc-Projects/BlogApp/obj/Debug/net8.0/BlogApp.pdb
 /Users/mattstillman/Desktop/ASP-NET-Mvc-Projects/BlogApp/obj/Debug/net8.0/BlogApp.genruntimeconfig.cache
 /Users/mattstillman/Desktop/ASP-NET-Mvc-Projects/BlogApp/obj/Debug/net8.0/ref/BlogApp.dll
+/Users/mattstillman/Desktop/ASP-NET-Mvc-Projects/BlogApp/bin/Debug/net8.0/blog-frontend/package-lock.json
+/Users/mattstillman/Desktop/ASP-NET-Mvc-Projects/BlogApp/bin/Debug/net8.0/blog-frontend/package.json
+/Users/mattstillman/Desktop/ASP-NET-Mvc-Projects/BlogApp/bin/Debug/net8.0/blog-frontend/public/manifest.json
+/Users/mattstillman/Desktop/ASP-NET-Mvc-Projects/BlogApp/bin/Debug/net8.0/blog-frontend/tsconfig.json
+/Users/mattstillman/Desktop/ASP-NET-Mvc-Projects/BlogApp/bin/Debug/net8.0/tsconfig.json

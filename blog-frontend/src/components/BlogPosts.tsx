@@ -25,29 +25,49 @@ const BlogPosts: React.FC = () => {
     const [selectedPostId, setSelectedPostId] = useState<number | null>(null);
 
     useEffect(() => {
-        API.get("/posts").then((response: { data: Post[] }) => setPosts(response.data));
+        API.get("/posts")
+            .then((response: { data: Post[] }) => setPosts(response.data))
+            .catch((error) => {
+                console.error("Error fetching posts:", error.message);
+            });
     }, []);
 
     const handleAddComment = (postId: number) => {
-        if (newComment.trim() === "") return;
+        if (newComment.trim() === "") {
+            alert("Comment cannot be empty.");
+            return;
+        }
 
         const comment = {
-            id: Date.now(),
-            author: "Current User",
-            text: newComment,
+            Author: "Current User",  
+            Text: newComment,
         };
 
-        API.post(`/posts/${postId}/comments`, comment).then((response) => {
-            setPosts((prevPosts) =>
-                prevPosts.map((post) =>
-                    post.id === postId
-                        ? { ...post, comments: [...post.comments, response.data] }
-                        : post
-                )
-            );
-            setNewComment("");
-            setSelectedPostId(null);
-        });
+        API.post(`/posts/${postId}/comments`, comment)
+            .then((response) => {
+                setPosts((prevPosts) =>
+                    prevPosts.map((post) =>
+                        post.id === postId
+                            ? { ...post, comments: [...post.comments, response.data] }
+                            : post
+                    )
+                );
+                setNewComment("");
+                setSelectedPostId(null);
+                alert("Comment added successfully!");
+            })
+            .catch((error) => {
+                if (error.response) {
+                    console.error("Server responded with:", error.response.data);
+                    alert(`Error: ${error.response.data}`);
+                } else if (error.request) {
+                    console.error("No response received:", error.request);
+                    alert("No response from server.");
+                } else {
+                    console.error("Request setup error:", error.message);
+                    alert("Unexpected error occurred.");
+                }
+            });
     };
 
     return (
@@ -57,22 +77,26 @@ const BlogPosts: React.FC = () => {
                     <Card>
                         <Card.Body>
                             <Card.Title>{post.title}</Card.Title>
+                            <Card.Text>{post.content}</Card.Text>
                             <Card.Text>
-                                {post.content}
+                                <strong>Author:</strong> {post.author}
                             </Card.Text>
                             <Card.Text>
-                                Comments
+                                <strong>Comments:</strong>
                             </Card.Text>
-                            <Card.Text>
-                                {post.comments.map((comment) => (
+                            {post.comments.length > 0 ? (
+                                post.comments.map((comment) => (
                                     <p key={comment.id}>
                                         {comment.author}: {comment.text}
                                     </p>
-                                ))}
-                            </Card.Text>
+                                ))
+                            ) : (
+                                <p>No comments yet. Be the first to comment!</p>
+                            )}
+
                             <Form className="commentForm">
-                                <Form.Group controlId="formComment">
-                                    <Form.Label>Add a comment</Form.Label>
+                                <Form.Group controlId={`formComment-${post.id}`}>
+                                    <Form.Label>Add a Comment</Form.Label>
                                     <Form.Control
                                         type="text"
                                         placeholder="Enter your comment"
