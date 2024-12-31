@@ -39,11 +39,9 @@ const BlogPosts: React.FC = () => {
         }
 
         const payload = {
-            comment: {
-                Author: "Current User",
-                Text: newComment
-            },
-            Post: { id: postId }
+            Author: "Current User",
+            Text: newComment,
+            PostId: postId 
         };
 
         API.post(`/posts/${postId}/comments`, payload)
@@ -70,6 +68,7 @@ const BlogPosts: React.FC = () => {
                 }
             });
     };
+
 
     return (
         <div className="mainContainer">
