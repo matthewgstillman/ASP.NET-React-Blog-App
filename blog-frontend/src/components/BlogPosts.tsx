@@ -38,12 +38,15 @@ const BlogPosts: React.FC = () => {
             return;
         }
 
-        const comment = {
-            Author: "Current User",  
-            Text: newComment,
+        const payload = {
+            comment: {
+                Author: "Current User",
+                Text: newComment
+            },
+            Post: { id: postId }
         };
 
-        API.post(`/posts/${postId}/comments`, comment)
+        API.post(`/posts/${postId}/comments`, payload)
             .then((response) => {
                 setPosts((prevPosts) =>
                     prevPosts.map((post) =>
@@ -58,14 +61,12 @@ const BlogPosts: React.FC = () => {
             })
             .catch((error) => {
                 if (error.response) {
-                    console.error("Server responded with:", error.response.data);
-                    alert(`Error: ${error.response.data}`);
-                } else if (error.request) {
-                    console.error("No response received:", error.request);
-                    alert("No response from server.");
+                    const errorMessage = error.response.data.errors
+                        ? Object.values(error.response.data.errors).join(" ")
+                        : error.response.data.message || "An error occurred.";
+                    alert(`Error: ${errorMessage}`);
                 } else {
-                    console.error("Request setup error:", error.message);
-                    alert("Unexpected error occurred.");
+                    alert("Failed to add comment. Please try again.");
                 }
             });
     };
