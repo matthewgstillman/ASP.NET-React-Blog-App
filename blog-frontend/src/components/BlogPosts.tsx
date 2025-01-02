@@ -98,33 +98,6 @@ const BlogPosts: React.FC = () => {
                                 </small>
                             </Card.Text>
 
-                            <Card.Title className="mt-4">Comments</Card.Title>
-                            {post.comments.length > 0 ? (
-                                <ListGroup className="commentList">
-                                    {post.comments.map((comment) => (
-                                        <ListGroup.Item key={comment.id}>
-                                            <strong>{comment.author}</strong>: {comment.text}
-                                        </ListGroup.Item>
-                                    ))}
-                                </ListGroup>
-                            ) : (
-                                <p
-                                    className="text-muted clickable-text"
-                                    onClick={() => handleShowCommentForm(post.id)}
-                                >
-                                    No comments yet. <span className="text-primary">Be the first to comment!</span>
-                                </p>
-                            )}
-                            
-                            {post.comments.length > 0 && (
-                                <p
-                                    className="text-primary clickable-text mt-3"
-                                    onClick={() => handleShowCommentForm(post.id)}
-                                >
-                                    Add another comment
-                                </p>
-                            )}
-
                             {showCommentForm && selectedPostId === post.id && (
                                 <Form className="mt-4">
                                     <Form.Group controlId={`formAuthor-${post.id}`}>
@@ -158,8 +131,38 @@ const BlogPosts: React.FC = () => {
                                 </Form>
                             )}
                         </Card.Body>
+
+                        {/* Footer Section with Comment Count and Comments List */}
                         <Card.Footer className="text-muted">
-                            {post.comments.length} {post.comments.length === 1 ? 'comment' : 'comments'}
+                            <Card.Title className="mt-4">
+                                {post.comments.length} {post.comments.length === 1 ? 'comment' : 'comments'}
+                            </Card.Title>
+
+                            {post.comments.length > 0 ? (
+                                <ListGroup className="commentList mt-2">
+                                    {post.comments.map((comment) => (
+                                        <ListGroup.Item key={comment.id}>
+                                            <strong>{comment.author}</strong>: {comment.text}
+                                        </ListGroup.Item>
+                                    ))}
+                                </ListGroup>
+                            ) : (
+                                <p
+                                    className="text-muted clickable-text"
+                                    onClick={() => handleShowCommentForm(post.id)}
+                                >
+                                    No comments yet. <span className="text-primary">Be the first to comment!</span>
+                                </p>
+                            )}
+
+                            {post.comments.length > 0 && (
+                                <p
+                                    className="text-primary clickable-text mt-3"
+                                    onClick={() => handleShowCommentForm(post.id)}
+                                >
+                                    Add another comment
+                                </p>
+                            )}
                         </Card.Footer>
                     </Card>
                 </div>
