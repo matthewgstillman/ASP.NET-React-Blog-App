@@ -27,7 +27,10 @@ const BlogPosts: React.FC = () => {
     useEffect(() => {
         API.get("/posts")
             .then((response) => {
-                const postList = response.data?.$values || [];
+                const postList = response.data?.$values.map((post: any) => ({
+                    ...post,
+                    comments: post.comments?.$values || [],
+                })) || [];
                 setPosts(postList);
             })
             .catch((error) => {
