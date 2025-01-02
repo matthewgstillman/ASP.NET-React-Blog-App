@@ -3,6 +3,7 @@ import API from "../api";
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
+import ListGroup from 'react-bootstrap/ListGroup';
 
 interface Comment {
     id: number;
@@ -22,6 +23,7 @@ interface Post {
 const BlogPosts: React.FC = () => {
     const [posts, setPosts] = useState<Post[]>([]);
     const [newComment, setNewComment] = useState<string>("");
+    const [commentAuthor, setCommentAuthor] = useState<string>("");
     const [selectedPostId, setSelectedPostId] = useState<number | null>(null);
 
     useEffect(() => {
@@ -39,15 +41,15 @@ const BlogPosts: React.FC = () => {
     }, []);
 
     const handleAddComment = (postId: number) => {
-        if (newComment.trim() === "") {
-            alert("Comment cannot be empty.");
+        if (newComment.trim() === "" || commentAuthor.trim() === "") {
+            alert("Comment and Author cannot be empty.");
             return;
         }
 
         const payload = {
-            Author: "Current User",
+            Author: commentAuthor,
             Text: newComment,
-            PostId: postId 
+            PostId: postId
         };
 
         API.post(`/posts/${postId}/comments`, payload)
@@ -60,8 +62,8 @@ const BlogPosts: React.FC = () => {
                     )
                 );
                 setNewComment("");
+                setCommentAuthor("");
                 setSelectedPostId(null);
-                alert("Comment added successfully!");
             })
             .catch((error) => {
                 if (error.response) {
@@ -75,36 +77,50 @@ const BlogPosts: React.FC = () => {
             });
     };
 
-
     return (
         <div className="mainContainer">
             {posts.map((post) => (
                 <div className="blogPostsContainer" key={post.id}>
-                    <Card>
+                    <Card className="mb-4 shadow-sm">
+                        <Card.Header as="h5">{post.title}</Card.Header>
                         <Card.Body>
-                            <Card.Title>{post.title}</Card.Title>
                             <Card.Text>{post.content}</Card.Text>
                             <Card.Text>
-                                <strong>Author:</strong> {post.author}
+                                <small className="text-muted">By {post.author} • {new Date(post.createdAt).toLocaleDateString()}</small>
                             </Card.Text>
-                            <Card.Text>
-                                <strong>Comments:</strong>
-                            </Card.Text>
+
+                            <Card.Title className="mt-4">Comments</Card.Title>
                             {post.comments.length > 0 ? (
-                                post.comments.map((comment) => (
-                                    <p key={comment.id}>
-                                        {comment.author}: {comment.text}
-                                    </p>
-                                ))
+                                <ListGroup className="commentList">
+                                    {post.comments.map((comment) => (
+                                        <ListGroup.Item key={comment.id}>
+                                            <strong>{comment.author}</strong>: {comment.text}
+                                        </ListGroup.Item>
+                                    ))}
+                                </ListGroup>
                             ) : (
-                                <p>No comments yet. Be the first to comment!</p>
+                                <p className="text-muted">No comments yet. Be the first to comment!</p>
                             )}
 
-                            <Form className="commentForm">
-                                <Form.Group controlId={`formComment-${post.id}`}>
-                                    <Form.Label>Add a Comment</Form.Label>
+                            <Form className="mt-4">
+                                <Form.Group controlId={`formAuthor-${post.id}`}>
+                                    <Form.Label>Your Name</Form.Label>
                                     <Form.Control
                                         type="text"
+                                        placeholder="Enter your name"
+                                        value={selectedPostId === post.id ? commentAuthor : ""}
+                                        onChange={(e) => {
+                                            setSelectedPostId(post.id);
+                                            setCommentAuthor(e.target.value);
+                                        }}
+                                    />
+                                </Form.Group>
+
+                                <Form.Group controlId={`formComment-${post.id}`} className="mt-3">
+                                    <Form.Label>Add a Comment</Form.Label>
+                                    <Form.Control
+                                        as="textarea"
+                                        rows={3}
                                         placeholder="Enter your comment"
                                         value={selectedPostId === post.id ? newComment : ""}
                                         onChange={(e) => {
@@ -113,7 +129,9 @@ const BlogPosts: React.FC = () => {
                                         }}
                                     />
                                 </Form.Group>
+
                                 <Button
+                                    className="mt-3"
                                     variant="primary"
                                     onClick={() => handleAddComment(post.id)}
                                 >
@@ -121,6 +139,9 @@ const BlogPosts: React.FC = () => {
                                 </Button>
                             </Form>
                         </Card.Body>
+                        <Card.Footer className="text-muted">
+                            {post.comments.length} {post.comments.length === 1 ? 'comment' : 'comments'}
+                        </Card.Footer>
                     </Card>
                 </div>
             ))}
