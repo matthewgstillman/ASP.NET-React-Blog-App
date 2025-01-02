@@ -34,7 +34,14 @@ const BlogPosts: React.FC = () => {
                     ...post,
                     comments: post.comments?.$values || [],
                 })) || [];
-                setPosts(postList);
+
+                const sortedPosts = postList.sort((a: Post, b: Post) => {
+                    const dateA = new Date(a.createdAt).getTime() || 0;
+                    const dateB = new Date(b.createdAt).getTime() || 0;
+                    return dateB - dateA;
+                });
+
+                setPosts(sortedPosts);
             })
             .catch((error) => {
                 console.error("Error fetching posts:", error);
@@ -86,7 +93,6 @@ const BlogPosts: React.FC = () => {
 
     return (
         <div className="mainContainer">
-            <h1 className="mb-4">All Blog Posts</h1>
             {posts.map((post) => (
                 <div className="blogPostsContainer" key={post.id}>
                     <Card className="mb-4 shadow-sm">

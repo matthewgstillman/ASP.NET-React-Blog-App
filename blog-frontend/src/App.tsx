@@ -17,7 +17,7 @@ const App: React.FC = () => {
                         <Navbar.Collapse id="basic-navbar-nav">
                             <Nav className="ms-auto">
                                 <Nav.Link as={Link} to="/posts">Home</Nav.Link>
-                                <Nav.Link as={Link} to="/">Create a New Blog Post</Nav.Link>
+                                <Nav.Link as={Link} to="/">Create Blog Post</Nav.Link>
                             </Nav>
                         </Navbar.Collapse>
                     </Container>

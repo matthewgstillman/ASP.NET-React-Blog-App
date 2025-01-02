@@ -14,7 +14,6 @@ const CreatePost : React.FC = () => {
             setTitle("");
             setContent("");
             setAuthor("");
-            alert("Post created");
         })
     };
     
