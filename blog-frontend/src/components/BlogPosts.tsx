@@ -26,9 +26,12 @@ const BlogPosts: React.FC = () => {
 
     useEffect(() => {
         API.get("/posts")
-            .then((response: { data: Post[] }) => setPosts(response.data))
+            .then((response) => {
+                const postList = response.data?.$values || [];
+                setPosts(postList);
+            })
             .catch((error) => {
-                console.error("Error fetching posts:", error.message);
+                console.error("Error fetching posts:", error);
             });
     }, []);
 
