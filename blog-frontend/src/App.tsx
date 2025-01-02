@@ -1,5 +1,5 @@
 import React from 'react';
-import './assets/App.css';
+import './assets/App.scss';
 import CreatePost from "./components/CreatePost";
 import BlogPosts from "./components/BlogPosts";
 import 'bootstrap/dist/css/bootstrap.min.css';
