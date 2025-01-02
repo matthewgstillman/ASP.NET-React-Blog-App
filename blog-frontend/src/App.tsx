@@ -1,8 +1,8 @@
 import React from 'react';
 import './assets/App.css';
 import CreatePost from "./components/CreatePost";
-import 'bootstrap/dist/css/bootstrap.min.css';
 import BlogPosts from "./components/BlogPosts";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { Navbar, Nav, Container } from "react-bootstrap";
 

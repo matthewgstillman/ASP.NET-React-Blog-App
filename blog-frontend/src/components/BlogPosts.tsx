@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import ListGroup from 'react-bootstrap/ListGroup';
+import {useNavigate} from "react-router-dom";
 
 interface Comment {
     id: number;
@@ -90,7 +91,11 @@ const BlogPosts: React.FC = () => {
         setShowCommentForm(true);
         setSelectedPostId(postId);
     };
-
+    
+    const navigate = useNavigate();
+    const handleNavigate = () => {
+        navigate("/");
+    }
     return (
         <div className="mainContainer">
             {posts.map((post) => (
@@ -98,12 +103,12 @@ const BlogPosts: React.FC = () => {
                     <Card className="mb-4 shadow-sm">
                         <Card.Header as="h5">{post.title}</Card.Header>
                         <Card.Body>
-                            <Card.Text>{post.content}</Card.Text>
                             <Card.Text>
                                 <small className="text-muted">
                                     By {post.author} • {new Date(post.createdAt).toLocaleDateString()}
                                 </small>
                             </Card.Text>
+                            <Card.Text>{post.content}</Card.Text>
 
                             {showCommentForm && selectedPostId === post.id && (
                                 <Form className="mt-4">
@@ -140,14 +145,14 @@ const BlogPosts: React.FC = () => {
                         </Card.Body>
 
                         <Card.Footer className="text-muted">
-                            <Card.Title className="mt-4">
+                            <Card.Title className="mt-3 mb-3">
                                 {post.comments.length} {post.comments.length === 1 ? 'comment' : 'comments'}
                             </Card.Title>
 
                             {post.comments.length > 0 ? (
                                 <ListGroup className="commentList mt-2">
                                     {post.comments.map((comment) => (
-                                        <ListGroup.Item key={comment.id}>
+                                        <ListGroup.Item key={comment.id} className="mt-1 mb-1">
                                             <strong>{comment.author}</strong>: {comment.text}
                                         </ListGroup.Item>
                                     ))}
@@ -173,6 +178,15 @@ const BlogPosts: React.FC = () => {
                     </Card>
                 </div>
             ))}
+            <div className="createNewPostButtonContainer">
+                <Button
+                    className="createPostButton"
+                    variant="primary"
+                    onClick={handleNavigate}
+                >
+                    Create New Post
+                </Button>
+            </div>
         </div>
     );
 };

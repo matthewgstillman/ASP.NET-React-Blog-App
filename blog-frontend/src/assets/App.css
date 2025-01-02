@@ -4,6 +4,7 @@ body {
 }
 
 .App {
+    background-color: #71AFE5;
     text-align: center;
 }
 
@@ -100,6 +101,15 @@ h1 {
     width: 100%;
     padding: 1rem;
     box-sizing: border-box;
+}
+
+.createPostButton {
+    margin: 1rem;
+    padding: 0.5rem;
+    background-color: #0056b3;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
 }
 
 @media (max-width: 768px) {
