@@ -25,6 +25,7 @@ const BlogPosts: React.FC = () => {
     const [newComment, setNewComment] = useState<string>("");
     const [commentAuthor, setCommentAuthor] = useState<string>("");
     const [selectedPostId, setSelectedPostId] = useState<number | null>(null);
+    const [showCommentForm, setShowCommentForm] = useState<boolean>(false);
 
     useEffect(() => {
         API.get("/posts")
@@ -64,6 +65,7 @@ const BlogPosts: React.FC = () => {
                 setNewComment("");
                 setCommentAuthor("");
                 setSelectedPostId(null);
+                setShowCommentForm(false);
             })
             .catch((error) => {
                 if (error.response) {
@@ -77,6 +79,11 @@ const BlogPosts: React.FC = () => {
             });
     };
 
+    const handleShowCommentForm = (postId: number) => {
+        setShowCommentForm(true);
+        setSelectedPostId(postId);
+    };
+
     return (
         <div className="mainContainer">
             {posts.map((post) => (
@@ -86,7 +93,9 @@ const BlogPosts: React.FC = () => {
                         <Card.Body>
                             <Card.Text>{post.content}</Card.Text>
                             <Card.Text>
-                                <small className="text-muted">By {post.author} • {new Date(post.createdAt).toLocaleDateString()}</small>
+                                <small className="text-muted">
+                                    By {post.author} • {new Date(post.createdAt).toLocaleDateString()}
+                                </small>
                             </Card.Text>
 
                             <Card.Title className="mt-4">Comments</Card.Title>
@@ -99,45 +108,55 @@ const BlogPosts: React.FC = () => {
                                     ))}
                                 </ListGroup>
                             ) : (
-                                <p className="text-muted">No comments yet. Be the first to comment!</p>
+                                <p
+                                    className="text-muted clickable-text"
+                                    onClick={() => handleShowCommentForm(post.id)}
+                                >
+                                    No comments yet. <span className="text-primary">Be the first to comment!</span>
+                                </p>
+                            )}
+                            
+                            {post.comments.length > 0 && (
+                                <p
+                                    className="text-primary clickable-text mt-3"
+                                    onClick={() => handleShowCommentForm(post.id)}
+                                >
+                                    Add another comment
+                                </p>
                             )}
 
-                            <Form className="mt-4">
-                                <Form.Group controlId={`formAuthor-${post.id}`}>
-                                    <Form.Label>Your Name</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Enter your name"
-                                        value={selectedPostId === post.id ? commentAuthor : ""}
-                                        onChange={(e) => {
-                                            setSelectedPostId(post.id);
-                                            setCommentAuthor(e.target.value);
-                                        }}
-                                    />
-                                </Form.Group>
+                            {showCommentForm && selectedPostId === post.id && (
+                                <Form className="mt-4">
+                                    <Form.Group controlId={`formAuthor-${post.id}`}>
+                                        <Form.Label>Your Name</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Enter your name"
+                                            value={commentAuthor}
+                                            onChange={(e) => setCommentAuthor(e.target.value)}
+                                        />
+                                    </Form.Group>
 
-                                <Form.Group controlId={`formComment-${post.id}`} className="mt-3">
-                                    <Form.Label>Add a Comment</Form.Label>
-                                    <Form.Control
-                                        as="textarea"
-                                        rows={3}
-                                        placeholder="Enter your comment"
-                                        value={selectedPostId === post.id ? newComment : ""}
-                                        onChange={(e) => {
-                                            setSelectedPostId(post.id);
-                                            setNewComment(e.target.value);
-                                        }}
-                                    />
-                                </Form.Group>
+                                    <Form.Group controlId={`formComment-${post.id}`} className="mt-3">
+                                        <Form.Label>Add a Comment</Form.Label>
+                                        <Form.Control
+                                            as="textarea"
+                                            rows={3}
+                                            placeholder="Enter your comment"
+                                            value={newComment}
+                                            onChange={(e) => setNewComment(e.target.value)}
+                                        />
+                                    </Form.Group>
 
-                                <Button
-                                    className="mt-3"
-                                    variant="primary"
-                                    onClick={() => handleAddComment(post.id)}
-                                >
-                                    Submit
-                                </Button>
-                            </Form>
+                                    <Button
+                                        className="mt-3"
+                                        variant="primary"
+                                        onClick={() => handleAddComment(post.id)}
+                                    >
+                                        Submit
+                                    </Button>
+                                </Form>
+                            )}
                         </Card.Body>
                         <Card.Footer className="text-muted">
                             {post.comments.length} {post.comments.length === 1 ? 'comment' : 'comments'}
