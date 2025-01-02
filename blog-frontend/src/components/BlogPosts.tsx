@@ -86,6 +86,7 @@ const BlogPosts: React.FC = () => {
 
     return (
         <div className="mainContainer">
+            <h1 className="mb-4">All Blog Posts</h1>
             {posts.map((post) => (
                 <div className="blogPostsContainer" key={post.id}>
                     <Card className="mb-4 shadow-sm">
@@ -132,7 +133,6 @@ const BlogPosts: React.FC = () => {
                             )}
                         </Card.Body>
 
-                        {/* Footer Section with Comment Count and Comments List */}
                         <Card.Footer className="text-muted">
                             <Card.Title className="mt-4">
                                 {post.comments.length} {post.comments.length === 1 ? 'comment' : 'comments'}

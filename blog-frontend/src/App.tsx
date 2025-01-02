@@ -16,8 +16,8 @@ const App: React.FC = () => {
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />
                         <Navbar.Collapse id="basic-navbar-nav">
                             <Nav className="ms-auto">
-                                <Nav.Link as={Link} to="/">Home</Nav.Link>
-                                <Nav.Link as={Link} to="/posts">Blog Posts</Nav.Link>
+                                <Nav.Link as={Link} to="/posts">Home</Nav.Link>
+                                <Nav.Link as={Link} to="/">Create a New Blog Post</Nav.Link>
                             </Nav>
                         </Navbar.Collapse>
                     </Container>
@@ -38,7 +38,6 @@ const App: React.FC = () => {
                             path="/posts"
                             element={
                                 <>
-                                    <h1 className="mb-4">All Blog Posts</h1>
                                     <BlogPosts />
                                 </>
                             }
