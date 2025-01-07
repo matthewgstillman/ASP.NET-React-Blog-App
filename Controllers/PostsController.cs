@@ -8,19 +8,21 @@ using BlogApp.Models;
 public class PostsController : ControllerBase
 {
     private readonly BlogContext _context;
+    private readonly IConfiguration _configuration;
 
-    public PostsController(BlogContext context)
+    public PostsController(BlogContext context, IConfiguration configuration)
     {
         _context = context;
+        _configuration = configuration;
     }
-    
+
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Post>>> GetPosts()
     {
         var posts = await _context.Posts.Include(p => p.Comments).ToListAsync();
         return Ok(posts);
     }
-    
+
     [HttpPost]
     public async Task<ActionResult<Post>> CreatePost(Post post)
     {
@@ -35,7 +37,7 @@ public class PostsController : ControllerBase
 
         return CreatedAtAction(nameof(GetPosts), new { id = post.Id }, post);
     }
-    
+
     [HttpGet("{id}")]
     public async Task<ActionResult<Post>> GetPostById(int id)
     {
@@ -54,27 +56,50 @@ public class PostsController : ControllerBase
     [HttpPost("{postId}/comments")]
     public async Task<ActionResult<Comment>> AddComment(int postId, [FromBody] CommentDTO request)
     {
-        var post = await _context.Posts.FindAsync(postId);
+        var post = await _context.Posts.FindAsync(request.PostId);
         if (post == null)
         {
             return NotFound(new { message = "Post not found." });
         }
 
-        if (string.IsNullOrWhiteSpace(request.Comment.Author) || string.IsNullOrWhiteSpace(request.Comment.Text))
+        if (string.IsNullOrWhiteSpace(request.Author) || string.IsNullOrWhiteSpace(request.Text))
         {
             return BadRequest(new { message = "Author and Text are required." });
         }
 
         var comment = new Comment
         {
-            Author = request.Comment.Author,
-            Text = request.Comment.Text,
-            PostId = postId
+            Author = request.Author,
+            Text = request.Text,
+            PostId = request.PostId
         };
 
         _context.Comments.Add(comment);
         await _context.SaveChangesAsync();
 
         return Ok(comment);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeletePost(int id, [FromHeader(Name = "Authorization")] string token)
+    {
+        var adminToken = Environment.GetEnvironmentVariable("ADMIN_TOKEN") 
+                         ?? _configuration["AdminToken"];
+
+        if (token != adminToken)
+        {
+            return Unauthorized(new { message = "Unauthorized to delete posts." });
+        }
+
+        var post = await _context.Posts.FindAsync(id);
+        if (post == null)
+        {
+            return NotFound(new { message = "Post not found." });
+        }
+
+        _context.Posts.Remove(post);
+        await _context.SaveChangesAsync();
+
+        return NoContent();
     }
 }
