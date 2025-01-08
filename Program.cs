@@ -20,8 +20,23 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader());
 });
 
+DotNetEnv.Env.Load();
+
+var adminToken = Environment.GetEnvironmentVariable("ADMIN_TOKEN");
+
+if (!string.IsNullOrEmpty(adminToken))
+{
+    builder.Configuration["AdminToken"] = adminToken;
+}
+else
+{
+    Console.WriteLine("Warning: ADMIN_TOKEN not found in environment variables.");
+}
+
 var app = builder.Build();
 
 app.UseCors("AllowReactApp");
+
 app.MapControllers();
+
 app.Run();

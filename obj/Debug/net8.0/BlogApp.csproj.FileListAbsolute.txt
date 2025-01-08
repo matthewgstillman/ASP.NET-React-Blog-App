@@ -163,3 +163,5 @@
 /Users/mattstillman/Desktop/ASP-NET-Mvc-Projects/BlogApp/bin/Debug/net8.0/blog-frontend/public/manifest.json
 /Users/mattstillman/Desktop/ASP-NET-Mvc-Projects/BlogApp/bin/Debug/net8.0/blog-frontend/tsconfig.json
 /Users/mattstillman/Desktop/ASP-NET-Mvc-Projects/BlogApp/bin/Debug/net8.0/tsconfig.json
+/Users/mattstillman/Desktop/ASP-NET-Mvc-Projects/BlogApp/bin/Debug/net8.0/DotNetEnv.dll
+/Users/mattstillman/Desktop/ASP-NET-Mvc-Projects/BlogApp/bin/Debug/net8.0/Sprache.dll

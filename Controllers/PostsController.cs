@@ -91,13 +91,14 @@ public class PostsController : ControllerBase
 
         if (token != adminToken)
         {
+            Console.WriteLine($"Unauthorized DELETE attempt for Post ID: {id}");
             return Unauthorized(new { message = "Unauthorized to delete posts." });
         }
 
         var post = await _context.Posts.FindAsync(id);
         if (post == null)
         {
-            Console.WriteLine("Post not found.");
+            Console.WriteLine($"Post ID {id} not found.");
             return NotFound(new { message = "Post not found." });
         }
 
