@@ -47,6 +47,7 @@ public class PostsController : ControllerBase
 
         if (post == null)
         {
+            Console.WriteLine($"Post with ID {id} not found.");
             return NotFound(new { message = "Post not found." });
         }
 
@@ -83,6 +84,8 @@ public class PostsController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeletePost(int id, [FromHeader(Name = "Authorization")] string token)
     {
+        Console.WriteLine($"Delete request for post ID: {id}");
+        
         var adminToken = Environment.GetEnvironmentVariable("ADMIN_TOKEN") 
                          ?? _configuration["AdminToken"];
 
@@ -94,12 +97,14 @@ public class PostsController : ControllerBase
         var post = await _context.Posts.FindAsync(id);
         if (post == null)
         {
+            Console.WriteLine("Post not found.");
             return NotFound(new { message = "Post not found." });
         }
 
         _context.Posts.Remove(post);
         await _context.SaveChangesAsync();
 
+        Console.WriteLine("Post deleted successfully.");
         return NoContent();
     }
 }
