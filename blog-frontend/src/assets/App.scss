@@ -21,13 +21,15 @@ $text-color-light: #555;
 }
 
 body {
-    height: 100vh;
+    height: 100%;
     margin: 0;
 }
 
 .App {
     background-color: $secondary-blue;
-    text-align: center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .formContainer {
@@ -35,9 +37,9 @@ body {
     border: 1px solid $border-color;
     border-radius: 8px;
     padding: 2rem;
-    margin: 2rem auto;
+    margin: auto;
     max-width: 1000px;
-    @include box-shadow(2);
+    flex-grow: 1;
 }
 
 form {
