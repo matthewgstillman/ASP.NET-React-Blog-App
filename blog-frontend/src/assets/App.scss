@@ -1,8 +1,9 @@
 // Variables
 $primary-blue: #0056b3;
 $primary-blue-dark: #003c80;
-$secondary-blue: #71AFE5;
+$secondary-blue: #749ecb;
 $secondary-blue-light: #a3d4f5;
+$primary-purple: #4f008f;
 $light-bg: #f9f9f9;
 $border-color: #ddd;
 $border-color-dark: #bbb;
@@ -26,7 +27,8 @@ body {
 }
 
 .App {
-    background-color: $secondary-blue;
+    background: $secondary-blue;
+    background: linear-gradient(90deg, $primary-purple 0%, $secondary-blue 53%);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
